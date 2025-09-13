@@ -1,0 +1,10 @@
+/storage/docs
+
+# Dependencies
+/node_modules
+
+# DB
+db.sqlite
+
+# Production
+/build
