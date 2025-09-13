@@ -2,24 +2,23 @@ import express from 'express';
 import docRoutes from './routes/documents.routes';
 import userRoutes from './routes/users.routes';
 
-console.log('🔹 index.ts iniciado');
-
 const app = express();
 
 //JSON middleware
 app.use(express.json());
-// Routes middleware
-app.use('/api', docRoutes);
 
+// Document routes
+app.use('/api', docRoutes);
+// User routes
 app.use('/users', userRoutes);
 
-// Ruta de prueba
+// Test route
 app.get('/', (req, res) => {
-  res.send('✅ Servidor funcionando con Node + TS + Express!');
+  res.send('Server running with Node + TS + Express!');
 });
 
-// Levantar servidor
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
