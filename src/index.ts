@@ -1,11 +1,14 @@
 import express from 'express';
 import docRoutes from './routes/documents.routes';
 import userRoutes from './routes/users.routes';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
 //JSON middleware
 app.use(express.json());
+// Cookie parser middleware
+app.use(cookieParser());
 
 // Document routes
 app.use('/api', docRoutes);

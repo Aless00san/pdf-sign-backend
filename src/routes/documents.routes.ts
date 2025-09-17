@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { db, documents } from '../db';
+import { db } from '../db';
+import { documents } from '../schema';
 import { randomUUID } from 'crypto';
 import { upload } from '../multer';
 import { eq } from 'drizzle-orm';
