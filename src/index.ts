@@ -2,6 +2,7 @@ import express from 'express';
 import docRoutes from './routes/documents.routes';
 import userRoutes from './routes/users.routes';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 const app = express();
 
@@ -9,7 +10,13 @@ const app = express();
 app.use(express.json());
 // Cookie parser middleware
 app.use(cookieParser());
-
+// Cors Middleware
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  })
+);
 // Document routes
 app.use('/api', docRoutes);
 // User routes
