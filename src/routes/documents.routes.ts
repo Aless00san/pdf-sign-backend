@@ -60,7 +60,7 @@ router.get("/documents/:id/qr", async (req, res) => {
   }
 
   // FRONTEND URL
-  const url = `https://mi-app.com/sign/${docId}`;
+  const url = `http://localhost:5173/sign/${docId}`;
 
   try {
     const qrDataUrl = await QRCode.toDataURL(url);
@@ -144,6 +144,38 @@ router.get("/documents", auth, async (req, res) => {
     .all();
   if (!docs) return res.status(404).json({ error: "No documents found" });
   return res.status(200).json(docs);
+});
+
+// Ruta para descargar el archivo
+router.get("/documents/:id/file", auth, async (req, res) => {
+  const userId = (req as any).userId;
+  const { id } = req.params;
+
+  // Buscar el documento en la base de datos
+  const doc = await db
+    .select()
+    .from(documents)
+    .where(eq(documents.id, id))
+    .get();
+
+  if (!doc) return res.status(404).json({ error: "Document not found" });
+
+  // Verificar si el usuario tiene permiso para descargar el archivo
+  if (doc.userId !== userId)
+    return res.status(403).json({
+      error: "Forbidden: You are not authorized to access this document",
+    });
+
+  // Construir la ruta del archivo
+  const filePath = path.join("storage/docs", `${id}${path.extname(doc.name)}`);
+
+ res.download(filePath, doc.name, (err) => {
+    if (err) {
+      res
+        .status(500)
+        .json({ error: "Something went wrong while downloading the document" });
+    }
+  });
 });
 
 export default router;
